@@ -56,6 +56,7 @@ class ParsingServer(ParserServicer):
         return self.return_data(request, name, column_name, row_name)
 
     def return_data(self, request, name, column_name=None, row_name=None):
+        logging.debug("Retrieving {} data".format(name))
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
         data_handler = DataHandler(analysis_client)
         path, data = data_handler.get_data(name)
@@ -63,6 +64,7 @@ class ParsingServer(ParserServicer):
         metadata = MetaData(status=Status.PENDING, name=name, format=format, column_index=0,
                             row_index=0, column_name=column_name, row_name=row_name)
         response = ParseDataResponse(metadata=metadata)
+        logging.debug("Generating response for {} data".format(name))
         yield response
         if request.format and request.format != data_handler.DATA_FORMAT:
             data_chunks = data_handler.convert(path, data, request.format)
