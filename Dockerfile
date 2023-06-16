@@ -11,6 +11,7 @@ COPY requirements.txt /service/requirements.txt
 WORKDIR /service
 RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
+RUN python -m nltk.downloader stopwords
 
 EXPOSE 50500
 ENTRYPOINT [ "python", "parsingServer.py" ]
