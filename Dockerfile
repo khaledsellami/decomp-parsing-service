@@ -7,6 +7,8 @@ COPY models/ /service/models/
 COPY analysis /service/analysis/
 COPY dataHandler.py /service/dataHandler.py
 COPY parsingServer.py /service/parsingServer.py
+COPY main.py /service/main.py
+COPY cli.py /service/cli.py
 COPY requirements.txt /service/requirements.txt
 COPY data_prod/ /service/data/
 WORKDIR /service
