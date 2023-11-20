@@ -44,6 +44,7 @@ class SemParser:
         return df
 
     def get_count_data(self, level="class") -> pd.DataFrame:
+        # TODO Warning: misleading name, should be changed in the future
         if level == "class":
             tfidf = TFIDFTransformer([c.textAndNames for c in self.classes])
             tfidf.build()
