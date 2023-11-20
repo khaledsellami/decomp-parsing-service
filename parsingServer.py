@@ -5,8 +5,11 @@ import grpc
 
 from models.parse_pb2 import Status, ParseReply, Names, Granularity, MetaData, File, ParseDataResponse, Format
 from models.parse_pb2_grpc import ParserServicer, add_ParserServicer_to_server
-from analysisClient import AnalysisClient
+from analysis.analysisClient import AnalysisClient
 from dataHandler import DataHandler
+
+
+ALLOWED_APPS = ["petclinic", "plants"]
 
 
 SUPPORTED_LANGUAGES = ["java", "python"]
@@ -57,6 +60,9 @@ class ParsingServer(ParserServicer):
 
     def return_data(self, request, name, column_name=None, row_name=None):
         logging.debug("Retrieving {} data".format(name))
+        if request.appName not in ALLOWED_APPS:
+            raise ValueError(f"Unauthorized application {request.appName}. Please choose from the following options: "
+                             f"{ALLOWED_APPS}")
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
         data_handler = DataHandler(analysis_client)
         path, data = data_handler.get_data(name)
@@ -96,5 +102,4 @@ def serve():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     serve()

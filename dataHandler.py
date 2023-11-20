@@ -1,12 +1,12 @@
 import io
 import logging
 import os
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 import pickle
 
 import pandas as pd
 
-from analysisClient import AnalysisClient
+from analysis.dataClient import DataClient
 from parsers import StructParser, SemParser
 from models.parse_pb2 import Format
 
@@ -17,11 +17,11 @@ class DataHandler:
     LOCAL_PATH = "./data/"
     DATA_FORMAT = Format.PARQUET
 
-    def __init__(self, client: AnalysisClient, format: Format = Format.PARQUET):
+    def __init__(self, client: DataClient, format: Format = Format.PARQUET, output_path: Optional[str] = None):
         self.app_name = client.app_name
-        self.app_repo = client.app_repo
         self.client = client
         self.format = format
+        self.output_path = self.LOCAL_PATH if output_path is None else output_path
         self.logger = logging.getLogger(__name__)
 
     def get_names(self, level="class") -> List[str]:
@@ -40,8 +40,8 @@ class DataHandler:
         classes = methods = None
         for file_name in ["interactions", "calls", "tfidf", "word_count"]:
             if not os.path.exists(
-                    os.path.join(self.LOCAL_PATH, self.app_name, "{}.{}".format(file_name,
-                                                                                Format.Name(self.DATA_FORMAT).lower()))
+                    os.path.join(self.output_path, self.app_name, "{}.{}".format(file_name,
+                                                                                Format.Name(self.format).lower()))
             ):
                 try:
                     if classes is None:
@@ -68,36 +68,37 @@ class DataHandler:
         return 0
 
     def save(self, data: pd.DataFrame, name: str):
-        path = os.path.join(self.LOCAL_PATH, self.app_name, "{}.{}".format(name, Format.Name(self.DATA_FORMAT).lower()))
+        path = os.path.join(self.output_path, self.app_name, "{}.{}".format(name, Format.Name(self.format).lower()))
+        self.logger.debug(f"Saving data in {path}")
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        if self.DATA_FORMAT == Format.PARQUET:
+        if self.format == Format.PARQUET:
             data.to_parquet(path)
-        elif self.DATA_FORMAT == Format.CSV:
+        elif self.format == Format.CSV:
             data.to_csv(path)
-        elif self.DATA_FORMAT == Format.PICKLE:
+        elif self.format == Format.PICKLE:
             data.to_pickle(path)
-        elif self.DATA_FORMAT == Format.JSON:
+        elif self.format == Format.JSON:
             data.to_json(path)
         else:
-            raise ValueError("Unrecognized data_format {}!".format(Format.Name(self.DATA_FORMAT).lower()))
+            raise ValueError("Unrecognized data_format {}!".format(Format.Name(self.format).lower()))
 
     def load(self, path: str) -> pd.DataFrame:
-        if self.DATA_FORMAT == Format.PARQUET:
+        if self.format == Format.PARQUET:
             data = pd.read_parquet(path)
-        elif self.DATA_FORMAT == Format.CSV:
+        elif self.format == Format.CSV:
             data = pd.read_csv(path)
-        elif self.DATA_FORMAT == Format.PICKLE:
+        elif self.format == Format.PICKLE:
             data = pd.read_pickle(path)
-        elif self.DATA_FORMAT == Format.JSON:
+        elif self.format == Format.JSON:
             data = pd.read_json(path)
         else:
-            raise ValueError("Unrecognized data_format {}!".format(Format.Name(self.DATA_FORMAT).lower()))
+            raise ValueError("Unrecognized data_format {}!".format(Format.Name(self.format).lower()))
         return data
 
     def get_data(self, data_type: str) -> Tuple[str, Union[pd.DataFrame, None]]:
         assert data_type in ["interactions", "calls", "tfidf", "word_count"]
         data_path = os.path.join(self.LOCAL_PATH, self.app_name, "{}.{}".format(data_type,
-                                                                                Format.Name(self.DATA_FORMAT).lower()))
+                                                                                Format.Name(self.format).lower()))
         if not os.path.exists(data_path):
             classes = self.client.get_classes()
             methods = self.client.get_methods()

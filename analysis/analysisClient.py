@@ -4,6 +4,7 @@ from typing import List
 
 import grpc
 
+from analysis.dataClient import DataClient
 from models.analyze_pb2_grpc import AnalyzerStub
 from models.analyze_pb2 import AstRequest, Class_, Method_, Invocation_
 
@@ -11,17 +12,17 @@ from models.analyze_pb2 import AstRequest, Class_, Method_, Invocation_
 DEFAULT_ANALYSIS_SERVICE_PORTS = dict(java=50100, python=50101)
 
 
-class AnalysisClient:
+class AnalysisClient(DataClient):
     SERVICE_NAME = {lang: os.getenv(f'SERVICE_{lang.upper()}_ANALYSIS', "localhost") for lang in ["java", "python"]}
     ANALYSIS_SERVICE_PORTS = {lang: os.getenv(f'SERVICE_{lang.upper()}_ANALYSIS_PORT',
                                     DEFAULT_ANALYSIS_SERVICE_PORTS[lang]) for lang in ["java", "python"]}
 
     def __init__(self, app_name: str, app_repo: str, language: str = "java"):
+        super().__init__(app_name)
         if language not in self.ANALYSIS_SERVICE_PORTS:
             raise ValueError(
                 "Unrecognized language {}. Supported languages are {}".format(
                     language, list(self.ANALYSIS_SERVICE_PORTS.keys())))
-        self.app_name = app_name
         self.app_repo = app_repo
         self.language = language
         self.logger = logging.getLogger(AnalysisClient.__name__)
