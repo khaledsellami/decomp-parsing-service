@@ -7,6 +7,7 @@ from models.parse_pb2 import Status, ParseReply, Names, Granularity, MetaData, F
 from models.parse_pb2_grpc import ParserServicer, add_ParserServicer_to_server
 from analysis.analysisClient import AnalysisClient
 from dataHandler import DataHandler
+from config import RESTRICT_APPS
 
 
 ALLOWED_APPS = ["petclinic", "plants"]
@@ -60,7 +61,7 @@ class ParsingServer(ParserServicer):
 
     def return_data(self, request, name, column_name=None, row_name=None):
         logging.debug("Retrieving {} data".format(name))
-        if request.appName not in ALLOWED_APPS:
+        if RESTRICT_APPS and request.appName not in ALLOWED_APPS:
             raise ValueError(f"Unauthorized application {request.appName}. Please choose from the following options: "
                              f"{ALLOWED_APPS}")
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)

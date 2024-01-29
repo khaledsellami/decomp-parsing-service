@@ -6,6 +6,7 @@ from analysis.analysisLocalClient import AnalysisLocalClient
 from dataHandler import DataHandler
 
 from models.parse_pb2 import Format
+from config import RESTRICT_APPS
 
 
 ALLOWED_APPS = ["petclinic", "plants"]
@@ -13,7 +14,7 @@ ALLOWED_APPS = ["petclinic", "plants"]
 
 def cli(args):
     app_name = args.APP
-    if app_name not in ALLOWED_APPS:
+    if RESTRICT_APPS and app_name not in ALLOWED_APPS:
         raise ValueError(f"Unauthorized application {app_name}. Please choose from the following options: "
                          f"{ALLOWED_APPS}")
     data_path = args.data

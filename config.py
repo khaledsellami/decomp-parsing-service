@@ -1,0 +1,1 @@
+RESTRICT_APPS = False
