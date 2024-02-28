@@ -1,5 +1,4 @@
 import os
-import logging
 from typing import List
 
 import grpc
@@ -25,7 +24,6 @@ class AnalysisClient(DataClient):
                     language, list(self.ANALYSIS_SERVICE_PORTS.keys())))
         self.app_repo = app_repo
         self.language = language
-        self.logger = logging.getLogger(AnalysisClient.__name__)
 
     def get_classes(self) -> List[Class_]:
         self.logger.debug(

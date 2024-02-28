@@ -1,6 +1,5 @@
 import os
 import json
-import logging
 from typing import List
 
 from analysis.dataClient import DataClient
@@ -11,7 +10,6 @@ class AnalysisLocalClient(DataClient):
     def __init__(self, app_name: str, data_path: str):
         super().__init__(app_name)
         self.data_path = data_path
-        self.logger = logging.getLogger(AnalysisLocalClient.__name__)
 
     def get_classes(self) -> List[Class_]:
         self.logger.debug("loading classes")
