@@ -6,6 +6,7 @@ option java_outer_classname = "ParsingProto";
 option objc_class_prefix = "JPD";
 
 package parsing;
+// version 2
 
 
 service Parser {
