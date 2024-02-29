@@ -23,6 +23,8 @@ def main():
                         default=DEFAULT_JAR_PATH)
     cli_parser.add_argument("-s", "--source", help='use the data input as source code', action="store_true")
     cli_parser.add_argument("-u", "--use_jar", help='use the jar client', action="store_true")
+    cli_parser.add_argument("-l", "--level", help='granularity level of the analysis', type=str,
+                        default="class", choices=["class", "method"])
     subparsers.add_parser("start", description="start the parsing server")
     args = parser.parse_args()
     # route the task

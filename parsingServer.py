@@ -22,8 +22,9 @@ class ParsingServer(ParserServicer):
         logging.info("received request for parsing application {} in language {} !".format(request.appName,
                                                                                            request.language))
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         data_handler = DataHandler(analysis_client, format=request.format)
-        result = data_handler.load_all()
+        result = data_handler.load_all(level)
         status = Status.SUCCESS if not result else Status.FAILED
         reply = ParseReply(status=status)
         return reply
@@ -37,26 +38,30 @@ class ParsingServer(ParserServicer):
 
     def getInteractions(self, request, context):
         name = "interactions"
-        column_name = "class_names"
-        row_name = "class_names"
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        column_name = f"{level}_names"
+        row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getCalls(self, request, context):
         name = "calls"
-        column_name = "class_names"
-        row_name = "class_names"
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        column_name = f"{level}_names"
+        row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getTFIDF(self, request, context):
         name = "tfidf"
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         column_name = "vocabulary"
-        row_name = "class_names"
+        row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getWordCounts(self, request, context):
         name = "word_count"
-        column_name = "class_names"
-        row_name = "class_names"
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        column_name = f"{level}_names"
+        row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def return_data(self, request, name, column_name=None, row_name=None):
@@ -64,9 +69,10 @@ class ParsingServer(ParserServicer):
         if RESTRICT_APPS and request.appName not in ALLOWED_APPS:
             raise ValueError(f"Unauthorized application {request.appName}. Please choose from the following options: "
                              f"{ALLOWED_APPS}")
+        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
         data_handler = DataHandler(analysis_client)
-        path, data = data_handler.get_data(name)
+        path, data = data_handler.get_data(name, level)
         format = request.format if request.format else data_handler.DATA_FORMAT
         metadata = MetaData(status=Status.PENDING, name=name, format=format, column_index=0,
                             row_index=0, column_name=column_name, row_name=row_name)

@@ -36,34 +36,37 @@ class DataHandler:
         else:
             raise NotImplementedError()
 
-    def load_all(self) -> int:
+    def load_all(self, level="class") -> int:
+        if level not in ["class", "method"]:
+            raise ValueError(f"level {level} is not in ['class', 'method']")
         classes = methods = None
         for file_name in ["interactions", "calls", "tfidf", "word_count"]:
             if not os.path.exists(
-                    os.path.join(self.output_path, self.app_name, "{}.{}".format(file_name,
-                                                                                Format.Name(self.format).lower()))
+                    os.path.join(self.output_path, self.app_name, "{}_{}.{}".format(level, file_name,
+                                                                                    Format.Name(self.format).lower()))
             ):
                 try:
                     if classes is None:
                         classes = self.client.get_classes()
                     if methods is None:
                         methods = self.client.get_methods()
-                    if file_name == "interactions":
+                    if file_name == "interactions" and level == "class":
                         parser = StructParser(classes, methods)
                         data, calls, _, _ = parser.get_interactions()
-                        self.save(calls, "calls")
+                        self.save(calls, f"{level}_calls")
                     elif file_name == "calls":
                         parser = StructParser(classes, methods)
-                        data, _ = parser.get_calls()
+                        data = parser.get_calls(level)
                     elif file_name == "tfidf":
                         parser = SemParser(classes, methods)
-                        data = parser.get_tfidf_data()
+                        data = parser.get_tfidf_data(level)
                     else:
                         parser = SemParser(classes, methods)
-                        data = parser.get_count_data()
-                    self.save(data, file_name)
+                        data = parser.get_count_data(level)
+                    self.save(data, f"{level}_{file_name}")
                 except Exception as e:
                     self.logger.error(e)
+                    raise e
                     return 1
         return 0
 
@@ -95,28 +98,35 @@ class DataHandler:
             raise ValueError("Unrecognized data_format {}!".format(Format.Name(self.format).lower()))
         return data
 
-    def get_data(self, data_type: str) -> Tuple[str, Union[pd.DataFrame, None]]:
+    def get_data(self, data_type: str, level="class") -> Tuple[str, Union[pd.DataFrame, None]]:
         assert data_type in ["interactions", "calls", "tfidf", "word_count"]
-        data_path = os.path.join(self.LOCAL_PATH, self.app_name, "{}.{}".format(data_type,
-                                                                                Format.Name(self.format).lower()))
+        data_path = os.path.join(self.LOCAL_PATH, self.app_name, "{}_{}.{}".format(level, data_type,
+                                                                                   Format.Name(self.format).lower()))
         if not os.path.exists(data_path):
             classes = self.client.get_classes()
             methods = self.client.get_methods()
             if data_type == "interactions":
-                parser = StructParser(classes, methods)
-                data, calls, _, _ = parser.get_interactions()
+                if level == "method":
+                    self.logger.warning(f"data type {data_type} not valid for level {level}. Defaulting to calls "
+                                        f"instead!")
+                    parser = StructParser(classes, methods)
+                    data = parser.get_calls(level)
+                else:
+                    parser = StructParser(classes, methods)
+                    data, calls, _, _ = parser.get_interactions()
             elif data_type == "calls":
                 parser = StructParser(classes, methods)
-                data, _ = parser.get_calls()
+                data = parser.get_calls(level)
             elif data_type == "tfidf":
                 parser = SemParser(classes, methods)
-                data = parser.get_tfidf_data()
+                data = parser.get_tfidf_data(level)
             else:
                 parser = SemParser(classes, methods)
-                data = parser.get_count_data()
-            self.save(data, data_type)
-            return data_path, data
-        return data_path, None
+                data = parser.get_count_data(level)
+            self.save(data, f"{level}_{data_type}")
+        else:
+            data = self.load(data_path)
+        return data_path, data
 
     def convert(self, path: str = None, data: pd.DataFrame = None, format: Format = Format.PARQUET):
         assert not (path is None and data is None)

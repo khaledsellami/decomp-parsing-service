@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import models.parse_pb2 as parse__pb2
+from models import parse_pb2 as parse_dot_v2_dot_parse__pb2
 
 
 class ParserStub(object):
@@ -16,33 +16,33 @@ class ParserStub(object):
         """
         self.parseAll = channel.unary_unary(
                 '/parsing.Parser/parseAll',
-                request_serializer=parse__pb2.ParseRequest.SerializeToString,
-                response_deserializer=parse__pb2.ParseReply.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.ParseReply.FromString,
                 )
         self.getNames = channel.unary_unary(
                 '/parsing.Parser/getNames',
-                request_serializer=parse__pb2.NamesRequest.SerializeToString,
-                response_deserializer=parse__pb2.Names.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.NamesRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.Names.FromString,
                 )
         self.getInteractions = channel.unary_stream(
                 '/parsing.Parser/getInteractions',
-                request_serializer=parse__pb2.ParseRequest.SerializeToString,
-                response_deserializer=parse__pb2.ParseDataResponse.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
                 )
         self.getCalls = channel.unary_stream(
                 '/parsing.Parser/getCalls',
-                request_serializer=parse__pb2.ParseRequest.SerializeToString,
-                response_deserializer=parse__pb2.ParseDataResponse.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
                 )
         self.getTFIDF = channel.unary_stream(
                 '/parsing.Parser/getTFIDF',
-                request_serializer=parse__pb2.ParseRequest.SerializeToString,
-                response_deserializer=parse__pb2.ParseDataResponse.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
                 )
         self.getWordCounts = channel.unary_stream(
                 '/parsing.Parser/getWordCounts',
-                request_serializer=parse__pb2.ParseRequest.SerializeToString,
-                response_deserializer=parse__pb2.ParseDataResponse.FromString,
+                request_serializer=parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+                response_deserializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
                 )
 
 
@@ -90,33 +90,33 @@ def add_ParserServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'parseAll': grpc.unary_unary_rpc_method_handler(
                     servicer.parseAll,
-                    request_deserializer=parse__pb2.ParseRequest.FromString,
-                    response_serializer=parse__pb2.ParseReply.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.ParseRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.ParseReply.SerializeToString,
             ),
             'getNames': grpc.unary_unary_rpc_method_handler(
                     servicer.getNames,
-                    request_deserializer=parse__pb2.NamesRequest.FromString,
-                    response_serializer=parse__pb2.Names.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.NamesRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.Names.SerializeToString,
             ),
             'getInteractions': grpc.unary_stream_rpc_method_handler(
                     servicer.getInteractions,
-                    request_deserializer=parse__pb2.ParseRequest.FromString,
-                    response_serializer=parse__pb2.ParseDataResponse.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.ParseRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.SerializeToString,
             ),
             'getCalls': grpc.unary_stream_rpc_method_handler(
                     servicer.getCalls,
-                    request_deserializer=parse__pb2.ParseRequest.FromString,
-                    response_serializer=parse__pb2.ParseDataResponse.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.ParseRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.SerializeToString,
             ),
             'getTFIDF': grpc.unary_stream_rpc_method_handler(
                     servicer.getTFIDF,
-                    request_deserializer=parse__pb2.ParseRequest.FromString,
-                    response_serializer=parse__pb2.ParseDataResponse.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.ParseRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.SerializeToString,
             ),
             'getWordCounts': grpc.unary_stream_rpc_method_handler(
                     servicer.getWordCounts,
-                    request_deserializer=parse__pb2.ParseRequest.FromString,
-                    response_serializer=parse__pb2.ParseDataResponse.SerializeToString,
+                    request_deserializer=parse_dot_v2_dot_parse__pb2.ParseRequest.FromString,
+                    response_serializer=parse_dot_v2_dot_parse__pb2.ParseDataResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -140,8 +140,8 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/parsing.Parser/parseAll',
-            parse__pb2.ParseRequest.SerializeToString,
-            parse__pb2.ParseReply.FromString,
+            parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.ParseReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -157,8 +157,8 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/parsing.Parser/getNames',
-            parse__pb2.NamesRequest.SerializeToString,
-            parse__pb2.Names.FromString,
+            parse_dot_v2_dot_parse__pb2.NamesRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.Names.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -174,8 +174,8 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/parsing.Parser/getInteractions',
-            parse__pb2.ParseRequest.SerializeToString,
-            parse__pb2.ParseDataResponse.FromString,
+            parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -191,8 +191,8 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/parsing.Parser/getCalls',
-            parse__pb2.ParseRequest.SerializeToString,
-            parse__pb2.ParseDataResponse.FromString,
+            parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -208,8 +208,8 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/parsing.Parser/getTFIDF',
-            parse__pb2.ParseRequest.SerializeToString,
-            parse__pb2.ParseDataResponse.FromString,
+            parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -225,7 +225,7 @@ class Parser(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/parsing.Parser/getWordCounts',
-            parse__pb2.ParseRequest.SerializeToString,
-            parse__pb2.ParseDataResponse.FromString,
+            parse_dot_v2_dot_parse__pb2.ParseRequest.SerializeToString,
+            parse_dot_v2_dot_parse__pb2.ParseDataResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

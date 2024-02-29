@@ -41,7 +41,12 @@ class StructParser:
                     return i, class_
         return -1, None
 
-    def get_calls(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def get_calls(self, level: str = "class") -> pd.DataFrame:
+        assert level in ["class", "method"]
+        calls, method_calls = self._get_calls()
+        return calls if level == "class" else method_calls
+
+    def _get_calls(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
         # TODO optimize
         assert self.classes is not None and self.methods is not None
         class_names = self.get_class_names()
@@ -139,32 +144,32 @@ class StructParser:
             # parameter_usage
             for ref_class_ in class_.parameterTypes:
                 if self.is_distributed:
-                    ref_class_ = class_.serviceName.replace(" ","") + "." + ref_class_
+                    ref_class_ = class_.serviceName.replace(" ", "") + "." + ref_class_
                 if ref_class_ in class_names:
                     j = class_names.index(ref_class_)
-                    parameter_usage[i,j] += 1
+                    parameter_usage[i, j] += 1
             # return_usage
             for ref_class_ in class_.returnTypes:
                 if self.is_distributed:
-                    ref_class_ = class_.serviceName.replace(" ","") + "." + ref_class_
+                    ref_class_ = class_.serviceName.replace(" ", "") + "." + ref_class_
                 if ref_class_ in class_names:
                     j = class_names.index(ref_class_)
-                    return_usage[i,j] += 1
+                    return_usage[i, j] += 1
             # nested_usage
             for ref_class_ in class_.nestedTypes:
                 if self.is_distributed:
-                    ref_class_ = class_.serviceName.replace(" ","") + "." + ref_class_
+                    ref_class_ = class_.serviceName.replace(" ", "") + "." + ref_class_
                 if ref_class_ in class_names:
                     j = class_names.index(ref_class_)
-                    nested_usage[i,j] += 1
+                    nested_usage[i, j] += 1
             # inheritance_usage
             for ref_class_ in class_.inheritedTypes:
                 if self.is_distributed:
-                    ref_class_ = class_.serviceName.replace(" ","") + "." + ref_class_
+                    ref_class_ = class_.serviceName.replace(" ", "") + "." + ref_class_
                 if ref_class_ in class_names:
                     j = class_names.index(ref_class_)
-                    inheritance_usage[i,j] += 1
-        calls, method_calls = self.get_calls()
+                    inheritance_usage[i, j] += 1
+        calls, method_calls = self._get_calls()
         references = self.get_references()
         interactions = np.sum([field_usage, parameter_usage, return_usage, nested_usage, inheritance_usage,
                                calls.values, references.values], axis=0)

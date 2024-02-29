@@ -24,6 +24,7 @@ def cli(args):
     output_path = args.output
     jar_path = args.jar
     use_jar = args.use_jar
+    level = args.level
     format = Format.Value(args.format)
     if from_source:
         if use_jar:
@@ -36,7 +37,7 @@ def cli(args):
         else:
             client = AnalysisLocalClient(app_name, data_path)
     data_handler = DataHandler(client, format=format, output_path=output_path)
-    data_handler.load_all()
+    data_handler.load_all(level)
 
 
 if __name__ == "__main__":
@@ -54,6 +55,8 @@ if __name__ == "__main__":
                         default=DEFAULT_JAR_PATH)
     parser.add_argument("-s", "--source", help='use the data input as source code', action="store_true")
     parser.add_argument("-u", "--use_jar", help='use the jar client', action="store_true")
+    parser.add_argument("-l", "--level", help='granularity level of the analysis', type=str,
+                        default="class", choices=["class", "method"])
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     cli(args)
