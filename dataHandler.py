@@ -22,19 +22,20 @@ class DataHandler:
 
     def __init__(self, client: DataClient, format: Format = Format.PARQUET, output_path: Optional[str] = None):
         self.app_name = client.app_name
+        self.is_distributed = client.is_distributed
         self.client = client
         self.format = format
         self.output_path = self.LOCAL_PATH if output_path is None else output_path
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def get_names(self, level="class") -> List[str]:
         if level == "class":
             classes = self.client.get_classes()
-            parser = StructParser(classes)
+            parser = StructParser(classes, is_distributed=self.is_distributed)
             return parser.get_class_names()
         elif level == "method":
             methods = self.client.get_methods()
-            parser = StructParser(methods=methods)
+            parser = StructParser(methods=methods, is_distributed=self.is_distributed)
             return parser.get_method_names()
         else:
             raise NotImplementedError()
@@ -54,17 +55,17 @@ class DataHandler:
                     if methods is None:
                         methods = self.client.get_methods()
                     if file_name == "interactions" and level == "class":
-                        parser = StructParser(classes, methods)
+                        parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                         data, calls, _, _ = parser.get_interactions()
                         self.save(calls, f"{level}_calls")
                     elif file_name == "calls":
-                        parser = StructParser(classes, methods)
+                        parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                         data = parser.get_calls(level)
                     elif file_name == "tfidf":
-                        parser = SemParser(classes, methods)
+                        parser = SemParser(classes, methods, is_distributed=self.is_distributed)
                         data = parser.get_tfidf_data(level)
                     else:
-                        parser = SemParser(classes, methods)
+                        parser = SemParser(classes, methods, is_distributed=self.is_distributed)
                         data = parser.get_count_data(level)
                     self.save(data, f"{level}_{file_name}")
                 except Exception as e:
@@ -111,19 +112,19 @@ class DataHandler:
                 if level == "method":
                     self.logger.warning(f"data type {data_type} not valid for level {level}. Defaulting to calls "
                                         f"instead!")
-                    parser = StructParser(classes, methods)
+                    parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                     data = parser.get_calls(level)
                 else:
-                    parser = StructParser(classes, methods)
+                    parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                     data, calls, _, _ = parser.get_interactions()
             elif data_type == "calls":
-                parser = StructParser(classes, methods)
+                parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                 data = parser.get_calls(level)
             elif data_type == "tfidf":
-                parser = SemParser(classes, methods)
+                parser = SemParser(classes, methods, is_distributed=self.is_distributed)
                 data = parser.get_tfidf_data(level)
             else:
-                parser = SemParser(classes, methods)
+                parser = SemParser(classes, methods, is_distributed=self.is_distributed)
                 data = parser.get_count_data(level)
             self.save(data, f"{level}_{data_type}")
         else:

@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\022com.decomp.parsingB\014ParsingProtoP\001\242\002\003JPD',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14parse/v2/parse.proto\x12\x07parsing\"g\n\x0cNamesRequest\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x0f\n\x07\x61ppRepo\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12#\n\x05level\x18\x04 \x01(\x0e\x32\x14.parsing.Granularity\"\xa7\x01\n\x0cParseRequest\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x0f\n\x07\x61ppRepo\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12$\n\x06\x66ormat\x18\x04 \x01(\x0e\x32\x0f.parsing.FormatH\x00\x88\x01\x01\x12(\n\x05level\x18\x05 \x01(\x0e\x32\x14.parsing.GranularityH\x01\x88\x01\x01\x42\t\n\x07_formatB\x08\n\x06_level\"-\n\nParseReply\x12\x1f\n\x06status\x18\x01 \x01(\x0e\x32\x0f.parsing.Status\"\x16\n\x05Names\x12\r\n\x05names\x18\x01 \x03(\t\"\xd1\x01\n\x08MetaData\x12\x1f\n\x06status\x18\x01 \x01(\x0e\x32\x0f.parsing.Status\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1f\n\x06\x66ormat\x18\x03 \x01(\x0e\x32\x0f.parsing.Format\x12\x14\n\x0c\x63olumn_index\x18\x04 \x01(\x03\x12\x11\n\trow_index\x18\x05 \x01(\x03\x12\x18\n\x0b\x63olumn_name\x18\x06 \x01(\tH\x00\x88\x01\x01\x12\x15\n\x08row_name\x18\x07 \x01(\tH\x01\x88\x01\x01\x42\x0e\n\x0c_column_nameB\x0b\n\t_row_name\"\x17\n\x04\x46ile\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\"e\n\x11ParseDataResponse\x12%\n\x08metadata\x18\x01 \x01(\x0b\x32\x11.parsing.MetaDataH\x00\x12\x1d\n\x04\x66ile\x18\x02 \x01(\x0b\x32\r.parsing.FileH\x00\x42\n\n\x08response*$\n\x0bGranularity\x12\t\n\x05\x43LASS\x10\x00\x12\n\n\x06METHOD\x10\x01*?\n\x06Status\x12\x0b\n\x07PENDING\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x0b\n\x07SUCCESS\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03*4\n\x06\x46ormat\x12\x0b\n\x07PARQUET\x10\x00\x12\x07\n\x03\x43SV\x10\x01\x12\x08\n\x04JSON\x10\x02\x12\n\n\x06PICKLE\x10\x03\x32\x8f\x03\n\x06Parser\x12\x38\n\x08parseAll\x12\x15.parsing.ParseRequest\x1a\x13.parsing.ParseReply\"\x00\x12\x33\n\x08getNames\x12\x15.parsing.NamesRequest\x1a\x0e.parsing.Names\"\x00\x12H\n\x0fgetInteractions\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x41\n\x08getCalls\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x41\n\x08getTFIDF\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x46\n\rgetWordCounts\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x42*\n\x12\x63om.decomp.parsingB\x0cParsingProtoP\x01\xa2\x02\x03JPDb\x06proto3'
+  serialized_pb=b'\n\x14parse/v2/parse.proto\x12\x07parsing\"\x95\x01\n\x0cNamesRequest\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x0f\n\x07\x61ppRepo\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12#\n\x05level\x18\x04 \x01(\x0e\x32\x14.parsing.Granularity\x12\x1a\n\risDistributed\x18\x05 \x01(\x08H\x00\x88\x01\x01\x42\x10\n\x0e_isDistributed\"\xd5\x01\n\x0cParseRequest\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x0f\n\x07\x61ppRepo\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12$\n\x06\x66ormat\x18\x04 \x01(\x0e\x32\x0f.parsing.FormatH\x00\x88\x01\x01\x12(\n\x05level\x18\x05 \x01(\x0e\x32\x14.parsing.GranularityH\x01\x88\x01\x01\x12\x1a\n\risDistributed\x18\x06 \x01(\x08H\x02\x88\x01\x01\x42\t\n\x07_formatB\x08\n\x06_levelB\x10\n\x0e_isDistributed\"-\n\nParseReply\x12\x1f\n\x06status\x18\x01 \x01(\x0e\x32\x0f.parsing.Status\"\x16\n\x05Names\x12\r\n\x05names\x18\x01 \x03(\t\"\xd1\x01\n\x08MetaData\x12\x1f\n\x06status\x18\x01 \x01(\x0e\x32\x0f.parsing.Status\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1f\n\x06\x66ormat\x18\x03 \x01(\x0e\x32\x0f.parsing.Format\x12\x14\n\x0c\x63olumn_index\x18\x04 \x01(\x03\x12\x11\n\trow_index\x18\x05 \x01(\x03\x12\x18\n\x0b\x63olumn_name\x18\x06 \x01(\tH\x00\x88\x01\x01\x12\x15\n\x08row_name\x18\x07 \x01(\tH\x01\x88\x01\x01\x42\x0e\n\x0c_column_nameB\x0b\n\t_row_name\"\x17\n\x04\x46ile\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\"e\n\x11ParseDataResponse\x12%\n\x08metadata\x18\x01 \x01(\x0b\x32\x11.parsing.MetaDataH\x00\x12\x1d\n\x04\x66ile\x18\x02 \x01(\x0b\x32\r.parsing.FileH\x00\x42\n\n\x08response*$\n\x0bGranularity\x12\t\n\x05\x43LASS\x10\x00\x12\n\n\x06METHOD\x10\x01*?\n\x06Status\x12\x0b\n\x07PENDING\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x0b\n\x07SUCCESS\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03*4\n\x06\x46ormat\x12\x0b\n\x07PARQUET\x10\x00\x12\x07\n\x03\x43SV\x10\x01\x12\x08\n\x04JSON\x10\x02\x12\n\n\x06PICKLE\x10\x03\x32\x8f\x03\n\x06Parser\x12\x38\n\x08parseAll\x12\x15.parsing.ParseRequest\x1a\x13.parsing.ParseReply\"\x00\x12\x33\n\x08getNames\x12\x15.parsing.NamesRequest\x1a\x0e.parsing.Names\"\x00\x12H\n\x0fgetInteractions\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x41\n\x08getCalls\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x41\n\x08getTFIDF\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x12\x46\n\rgetWordCounts\x12\x15.parsing.ParseRequest\x1a\x1a.parsing.ParseDataResponse\"\x00\x30\x01\x42*\n\x12\x63om.decomp.parsingB\x0cParsingProtoP\x01\xa2\x02\x03JPDb\x06proto3'
 )
 
 _GRANULARITY = _descriptor.EnumDescriptor(
@@ -43,8 +43,8 @@ _GRANULARITY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=719,
-  serialized_end=755,
+  serialized_start=812,
+  serialized_end=848,
 )
 _sym_db.RegisterEnumDescriptor(_GRANULARITY)
 
@@ -79,8 +79,8 @@ _STATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=757,
-  serialized_end=820,
+  serialized_start=850,
+  serialized_end=913,
 )
 _sym_db.RegisterEnumDescriptor(_STATUS)
 
@@ -115,8 +115,8 @@ _FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=822,
-  serialized_end=874,
+  serialized_start=915,
+  serialized_end=967,
 )
 _sym_db.RegisterEnumDescriptor(_FORMAT)
 
@@ -170,6 +170,13 @@ _NAMESREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='isDistributed', full_name='parsing.NamesRequest.isDistributed', index=4,
+      number=5, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -181,9 +188,14 @@ _NAMESREQUEST = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_isDistributed', full_name='parsing.NamesRequest._isDistributed',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=33,
-  serialized_end=136,
+  serialized_start=34,
+  serialized_end=183,
 )
 
 
@@ -230,6 +242,13 @@ _PARSEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='isDistributed', full_name='parsing.ParseRequest.isDistributed', index=5,
+      number=6, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -251,9 +270,14 @@ _PARSEREQUEST = _descriptor.Descriptor(
       index=1, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_isDistributed', full_name='parsing.ParseRequest._isDistributed',
+      index=2, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=139,
-  serialized_end=306,
+  serialized_start=186,
+  serialized_end=399,
 )
 
 
@@ -284,8 +308,8 @@ _PARSEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=308,
-  serialized_end=353,
+  serialized_start=401,
+  serialized_end=446,
 )
 
 
@@ -316,8 +340,8 @@ _NAMES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=355,
-  serialized_end=377,
+  serialized_start=448,
+  serialized_end=470,
 )
 
 
@@ -400,8 +424,8 @@ _METADATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=380,
-  serialized_end=589,
+  serialized_start=473,
+  serialized_end=682,
 )
 
 
@@ -432,8 +456,8 @@ _FILE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=591,
-  serialized_end=614,
+  serialized_start=684,
+  serialized_end=707,
 )
 
 
@@ -476,11 +500,14 @@ _PARSEDATARESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=616,
-  serialized_end=717,
+  serialized_start=709,
+  serialized_end=810,
 )
 
 _NAMESREQUEST.fields_by_name['level'].enum_type = _GRANULARITY
+_NAMESREQUEST.oneofs_by_name['_isDistributed'].fields.append(
+  _NAMESREQUEST.fields_by_name['isDistributed'])
+_NAMESREQUEST.fields_by_name['isDistributed'].containing_oneof = _NAMESREQUEST.oneofs_by_name['_isDistributed']
 _PARSEREQUEST.fields_by_name['format'].enum_type = _FORMAT
 _PARSEREQUEST.fields_by_name['level'].enum_type = _GRANULARITY
 _PARSEREQUEST.oneofs_by_name['_format'].fields.append(
@@ -489,6 +516,9 @@ _PARSEREQUEST.fields_by_name['format'].containing_oneof = _PARSEREQUEST.oneofs_b
 _PARSEREQUEST.oneofs_by_name['_level'].fields.append(
   _PARSEREQUEST.fields_by_name['level'])
 _PARSEREQUEST.fields_by_name['level'].containing_oneof = _PARSEREQUEST.oneofs_by_name['_level']
+_PARSEREQUEST.oneofs_by_name['_isDistributed'].fields.append(
+  _PARSEREQUEST.fields_by_name['isDistributed'])
+_PARSEREQUEST.fields_by_name['isDistributed'].containing_oneof = _PARSEREQUEST.oneofs_by_name['_isDistributed']
 _PARSEREPLY.fields_by_name['status'].enum_type = _STATUS
 _METADATA.fields_by_name['status'].enum_type = _STATUS
 _METADATA.fields_by_name['format'].enum_type = _FORMAT
@@ -577,8 +607,8 @@ _PARSER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=877,
-  serialized_end=1276,
+  serialized_start=970,
+  serialized_end=1369,
   methods=[
   _descriptor.MethodDescriptor(
     name='parseAll',

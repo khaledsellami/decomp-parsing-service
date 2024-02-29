@@ -16,7 +16,7 @@ class SemParser:
         if self.classes is None:
             return []
         elif self.is_distributed:
-            return [class_["serviceName"].replace(" ", "") + "." + class_["fullName"] for class_ in self.classes]
+            return [class_.serviceName.replace(" ", "") + "." + class_.fullName for class_ in self.classes]
         else:
             return [class_.fullName for class_ in self.classes]
 
@@ -24,7 +24,7 @@ class SemParser:
         if self.methods is None:
             return []
         elif self.is_distributed:
-            return [method_["serviceName"].replace(" ","") + "." + method_["fullName"] for method_ in self.methods]
+            return [method_.serviceName.replace(" ","") + "." + method_.fullName for method_ in self.methods]
         else:
             return [method_.fullName for method_ in self.methods]
 

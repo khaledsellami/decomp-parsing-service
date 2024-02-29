@@ -8,11 +8,11 @@ from models import analyze_pb2 as apb
 
 
 class AnalysisJarClient(AnalysisLocalClient):
-    def __init__(self, app_name: str, app_path: str, jar_path: str):
+    def __init__(self, app_name: str, app_path: str, jar_path: str, is_distributed: bool = False):
         self.app_path = app_path
         self.jar_path = jar_path
         self.temp_folder = tempfile.TemporaryDirectory()
-        super().__init__(app_name, os.path.join(self.temp_folder.name, app_name))
+        super().__init__(app_name, os.path.join(self.temp_folder.name, app_name), is_distributed=is_distributed)
 
     def __del__(self):
         self.temp_folder.cleanup()
@@ -20,6 +20,8 @@ class AnalysisJarClient(AnalysisLocalClient):
     def _trigger_analysis(self):
         command = ['java', '-jar', self.jar_path, 'analyze', self.app_name, "-p", self.app_path,
                    "-o", self.temp_folder.name]
+        if self.is_distributed:
+            command.append("-d")
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = process.communicate()
         if process.returncode != 0:

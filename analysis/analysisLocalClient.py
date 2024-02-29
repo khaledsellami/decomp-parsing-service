@@ -7,8 +7,8 @@ from models import analyze_pb2 as apb
 
 
 class AnalysisLocalClient(DataClient):
-    def __init__(self, app_name: str, data_path: str):
-        super().__init__(app_name)
+    def __init__(self, app_name: str, data_path: str, is_distributed: bool = False):
+        super().__init__(app_name, is_distributed)
         self.data_path = data_path
 
     def get_classes(self) -> List[apb.Class_]:

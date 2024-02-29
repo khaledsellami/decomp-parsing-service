@@ -21,7 +21,9 @@ class ParsingServer(ppbg.ParserServicer):
     def parseAll(self, request, context):
         logging.info("received request for parsing application {} in language {} !".format(request.appName,
                                                                                            request.language))
-        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
+        is_distributed = request.isDistributed if request.HasField("isDistributed") else False
+        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language,
+                                         is_distributed=is_distributed)
         level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         data_handler = DataHandler(analysis_client, format=request.format)
         result = data_handler.load_all(level)
@@ -30,7 +32,9 @@ class ParsingServer(ppbg.ParserServicer):
         return reply
 
     def getNames(self, request, context):
-        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
+        is_distributed = request.isDistributed if request.HasField("isDistributed") else False
+        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language,
+                                         is_distributed=is_distributed)
         data_handler = DataHandler(analysis_client)
         names = data_handler.get_names(ppb.Granularity.Name(request.level).lower())
         reply = ppb.Names(names=names)
@@ -70,7 +74,9 @@ class ParsingServer(ppbg.ParserServicer):
             raise ValueError(f"Unauthorized application {request.appName}. Please choose from the following options: "
                              f"{ALLOWED_APPS}")
         level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
-        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
+        is_distributed = request.isDistributed if request.HasField("isDistributed") else False
+        analysis_client = AnalysisClient(request.appName, request.appRepo, request.language,
+                                         is_distributed=is_distributed)
         data_handler = DataHandler(analysis_client)
         path, data = data_handler.get_data(name, level)
         format = request.format if request.format else data_handler.DATA_FORMAT

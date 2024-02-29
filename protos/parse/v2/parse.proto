@@ -44,6 +44,7 @@ message NamesRequest {
   string appRepo = 2;
   string language = 3;
   Granularity level = 4;
+  optional bool isDistributed = 5;
 
 }
 
@@ -53,6 +54,7 @@ message ParseRequest {
   string language = 3;
   optional Format format = 4;
   optional Granularity level = 5;
+  optional bool isDistributed = 6;
 }
 
 message ParseReply {

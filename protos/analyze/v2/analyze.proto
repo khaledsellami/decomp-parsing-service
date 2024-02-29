@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.decomp.analysis";
+option java_outer_classname = "AnalysisProto";
+option objc_class_prefix = "JAD";
+
+package analysis;
+//version 2
+
+service Analyzer {
+
+  rpc initRepo (AstRequest) returns (AstReply) {};
+  rpc getClasses (AstRequest) returns (stream Class_) {};
+  rpc getMethods (AstRequest) returns (stream Method_) {};
+  rpc getInvocations (AstRequest) returns (stream Invocation_) {};
+}
+
+message Class_ {
+  bool isInterface = 1;
+  bool isImplicit = 2;
+  bool isAnonymous = 3;
+  string simpleName = 4;
+  string fullName = 5;
+  string filePath = 6;
+  repeated string referencedTypes = 7;
+  repeated string fieldTypes = 8;
+  repeated string parameterTypes = 9;
+  repeated string returnTypes = 10;
+  repeated string nestedTypes = 11;
+  repeated string inheritedTypes = 12;
+  repeated Invocation_ fieldCalls = 13;
+  repeated string constructors = 14;
+  repeated string textAndNames = 15;
+  repeated string methods = 16;
+  string appName = 17;
+  optional string serviceName = 18;
+}
+
+message Method_ {
+  bool isLambda = 1;
+  bool isConstructor = 2;
+  string parentName = 3;
+  string simpleName = 4;
+  string fullName = 5;
+  string returnType = 6;
+  repeated Invocation_ localInvocations = 7;
+  repeated Invocation_ invocations = 8;
+  repeated string parameterNames = 9;
+  repeated string parameterTypes = 10;
+  repeated string referencedTypes = 11;
+  repeated string textAndNames = 12;
+  string appName = 13;
+  optional string serviceName = 14;
+}
+
+message Invocation_ {
+  bool local = 1;
+  string invokingMethod = 2;
+  string invokingObject = 3;
+  string invokedMethod = 4;
+  string invokedObject = 5;
+  string appName = 6;
+  optional string serviceName = 7;
+}
+
+message ClassContainer {
+  repeated Class_ classes = 1;
+}
+
+message MethodContainer {
+  repeated Method_ methods = 1;
+}
+
+message InvocationContainer {
+  repeated Invocation_ invocations = 1;
+}
+
+
+message AstRequest {
+  string appName = 1;
+  string appRepo = 2;
+  optional bool includeTest = 3;
+  optional bool isDistributed = 4;
+}
+
+message AstReply {
+  string message = 1;
+}

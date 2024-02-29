@@ -24,17 +24,18 @@ def cli(args):
     jar_path = args.jar
     use_jar = args.use_jar
     level = args.level
+    is_distributed = args.is_distributed
     format = ppb.Format.Value(args.format)
     if from_source:
         if use_jar:
-            client = AnalysisJarClient(app_name, data_path, jar_path)
+            client = AnalysisJarClient(app_name, data_path, jar_path, is_distributed=is_distributed)
         else:
-            client = AnalysisClient(app_name, data_path)
+            client = AnalysisClient(app_name, data_path, is_distributed=is_distributed)
     else:
         if data_path is None:
-            client = AnalysisClient(app_name, "")
+            client = AnalysisClient(app_name, "", is_distributed=is_distributed)
         else:
-            client = AnalysisLocalClient(app_name, data_path)
+            client = AnalysisLocalClient(app_name, data_path, is_distributed=is_distributed)
     data_handler = DataHandler(client, format=format, output_path=output_path)
     data_handler.load_all(level)
 
@@ -56,6 +57,8 @@ if __name__ == "__main__":
     parser.add_argument("-u", "--use_jar", help='use the jar client', action="store_true")
     parser.add_argument("-l", "--level", help='granularity level of the analysis', type=str,
                         default="class", choices=["class", "method"])
+    parser.add_argument("-D", "--is_distributed", action="store_true",
+                        help='True is the application has a distributed architecture')
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     cli(args)
