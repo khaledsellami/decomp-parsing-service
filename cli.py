@@ -6,9 +6,8 @@ from analysis.analysisLocalClient import AnalysisLocalClient
 from analysis.analysisJarClient import AnalysisJarClient
 from dataHandler import DataHandler
 
-from models.parse_pb2 import Format
+from models import parse_pb2 as ppb
 from config import RESTRICT_APPS, DEFAULT_JAR_PATH
-from utils import is_url
 
 
 ALLOWED_APPS = ["petclinic", "plants"]
@@ -25,7 +24,7 @@ def cli(args):
     jar_path = args.jar
     use_jar = args.use_jar
     level = args.level
-    format = Format.Value(args.format)
+    format = ppb.Format.Value(args.format)
     if from_source:
         if use_jar:
             client = AnalysisJarClient(app_name, data_path, jar_path)
@@ -50,7 +49,7 @@ if __name__ == "__main__":
                         help='path for the static analysis data or source code or link to the source code')
     parser.add_argument("-o", "--output", help='path for the output', type=str, default="./output")
     parser.add_argument("-f", "--format", help='format of the data to save or load', type=str,
-                        choices=Format.keys(), default="PARQUET")
+                        choices=ppb.Format.keys(), default="PARQUET")
     parser.add_argument("-j", "--jar", help='path for the analysis jar file', type=str,
                         default=DEFAULT_JAR_PATH)
     parser.add_argument("-s", "--source", help='use the data input as source code', action="store_true")

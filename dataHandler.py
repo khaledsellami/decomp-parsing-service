@@ -8,7 +8,10 @@ import pandas as pd
 
 from analysis.dataClient import DataClient
 from parsers import StructParser, SemParser
-from models.parse_pb2 import Format
+from models import parse_pb2 as ppb
+
+
+Format = ppb.Format
 
 
 class DataHandler:
@@ -66,7 +69,6 @@ class DataHandler:
                     self.save(data, f"{level}_{file_name}")
                 except Exception as e:
                     self.logger.error(e)
-                    raise e
                     return 1
         return 0
 

@@ -4,7 +4,7 @@ import subprocess
 import tempfile
 
 from analysis.analysisLocalClient import AnalysisLocalClient
-from models.analyze_pb2 import Class_, Method_, Invocation_
+from models import analyze_pb2 as apb
 
 
 class AnalysisJarClient(AnalysisLocalClient):
@@ -26,17 +26,17 @@ class AnalysisJarClient(AnalysisLocalClient):
             raise subprocess.CalledProcessError(returncode=process.returncode, output=out, stderr=err, cmd=command)
         assert os.path.exists(self.data_path)
 
-    def get_classes(self) -> List[Class_]:
+    def get_classes(self) -> List[apb.Class_]:
         if not os.path.exists(self.data_path):
             self._trigger_analysis()
         return super().get_classes()
 
-    def get_methods(self) -> List[Method_]:
+    def get_methods(self) -> List[apb.Method_]:
         if not os.path.exists(self.data_path):
             self._trigger_analysis()
         return super().get_methods()
 
-    def get_invocations(self) -> List[Invocation_]:
+    def get_invocations(self) -> List[apb.Invocation_]:
         if not os.path.exists(self.data_path):
             self._trigger_analysis()
         return super().get_invocations()

@@ -2,12 +2,12 @@ from typing import List
 
 import pandas as pd
 
-from models import Class_, Method_
+from models import analyze_pb2 as apb
 from parsers.tfidfTransformer import TFIDFTransformer
 
 
 class SemParser:
-    def __init__(self, classes: List[Class_] = None, methods: List[Method_] = None, is_distributed=False):
+    def __init__(self, classes: List[apb.Class_] = None, methods: List[apb.Method_] = None, is_distributed=False):
         self.classes = classes
         self.methods = methods
         self.is_distributed = is_distributed

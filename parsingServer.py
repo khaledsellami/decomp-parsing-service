@@ -3,8 +3,8 @@ import logging
 
 import grpc
 
-from models.parse_pb2 import Status, ParseReply, Names, Granularity, MetaData, File, ParseDataResponse, Format
-from models.parse_pb2_grpc import ParserServicer, add_ParserServicer_to_server
+from models import parse_pb2 as ppb
+from models import parse_pb2_grpc as ppbg
 from analysis.analysisClient import AnalysisClient
 from dataHandler import DataHandler
 from config import RESTRICT_APPS
@@ -17,49 +17,49 @@ SUPPORTED_LANGUAGES = ["java", "python"]
 CHUNK_SIZE = 1024
 
 
-class ParsingServer(ParserServicer):
+class ParsingServer(ppbg.ParserServicer):
     def parseAll(self, request, context):
         logging.info("received request for parsing application {} in language {} !".format(request.appName,
                                                                                            request.language))
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         data_handler = DataHandler(analysis_client, format=request.format)
         result = data_handler.load_all(level)
-        status = Status.SUCCESS if not result else Status.FAILED
-        reply = ParseReply(status=status)
+        status = ppb.Status.SUCCESS if not result else ppb.Status.FAILED
+        reply = ppb.ParseReply(status=status)
         return reply
 
     def getNames(self, request, context):
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
         data_handler = DataHandler(analysis_client)
-        names = data_handler.get_names(Granularity.Name(request.level).lower())
-        reply = Names(names=names)
+        names = data_handler.get_names(ppb.Granularity.Name(request.level).lower())
+        reply = ppb.Names(names=names)
         return reply
 
     def getInteractions(self, request, context):
         name = "interactions"
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         column_name = f"{level}_names"
         row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getCalls(self, request, context):
         name = "calls"
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         column_name = f"{level}_names"
         row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getTFIDF(self, request, context):
         name = "tfidf"
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         column_name = "vocabulary"
         row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
 
     def getWordCounts(self, request, context):
         name = "word_count"
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         column_name = f"{level}_names"
         row_name = f"{level}_names"
         return self.return_data(request, name, column_name, row_name)
@@ -69,14 +69,14 @@ class ParsingServer(ParserServicer):
         if RESTRICT_APPS and request.appName not in ALLOWED_APPS:
             raise ValueError(f"Unauthorized application {request.appName}. Please choose from the following options: "
                              f"{ALLOWED_APPS}")
-        level = Granularity.Name(request.level).lower() if request.HasField("level") else "class"
+        level = ppb.Granularity.Name(request.level).lower() if request.HasField("level") else "class"
         analysis_client = AnalysisClient(request.appName, request.appRepo, request.language)
         data_handler = DataHandler(analysis_client)
         path, data = data_handler.get_data(name, level)
         format = request.format if request.format else data_handler.DATA_FORMAT
-        metadata = MetaData(status=Status.PENDING, name=name, format=format, column_index=0,
+        metadata = ppb.MetaData(status=ppb.Status.PENDING, name=name, format=format, column_index=0,
                             row_index=0, column_name=column_name, row_name=row_name)
-        response = ParseDataResponse(metadata=metadata)
+        response = ppb.ParseDataResponse(metadata=metadata)
         logging.debug("Generating response for {} data".format(name))
         yield response
         if request.format and request.format != data_handler.DATA_FORMAT:
@@ -86,7 +86,7 @@ class ParsingServer(ParserServicer):
                     chunk = f.read(CHUNK_SIZE)
                     if not chunk:
                         break
-                    response = ParseDataResponse(file=File(content=chunk))
+                    response = ppb.ParseDataResponse(file=ppb.File(content=chunk))
                     yield response
         else:
             with open(path, "rb") as f:
@@ -94,14 +94,14 @@ class ParsingServer(ParserServicer):
                     chunk = f.read(CHUNK_SIZE)
                     if not chunk:
                         break
-                    response = ParseDataResponse(file=File(content=chunk))
+                    response = ppb.ParseDataResponse(file=ppb.File(content=chunk))
                     yield response
 
 
 def serve():
     port = '50500'
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    add_ParserServicer_to_server(ParsingServer(), server)
+    ppbg.add_ParserServicer_to_server(ParsingServer(), server)
     server.add_insecure_port('[::]:' + port)
     server.start()
     logging.info("Server started, listening on " + port)

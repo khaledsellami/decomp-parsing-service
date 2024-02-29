@@ -3,7 +3,7 @@ import logging
 
 from cli import cli
 from parsingServer import serve
-from models.parse_pb2 import Format
+from models import parse_pb2 as ppb
 from config import DEFAULT_JAR_PATH
 
 
@@ -18,7 +18,7 @@ def main():
     cli_parser.add_argument("-d", "--data", help='path for the static analysis data', type=str)
     cli_parser.add_argument("-o", "--output", help='path for the output', type=str, default="./output")
     cli_parser.add_argument("-f", "--format", help='format of the data to save or load', type=str,
-                        choices=Format.keys(), default="PARQUET")
+                        choices=ppb.Format.keys(), default="PARQUET")
     cli_parser.add_argument("-j", "--jar", help='path for the analysis jar file', type=str,
                         default=DEFAULT_JAR_PATH)
     cli_parser.add_argument("-s", "--source", help='use the data input as source code', action="store_true")

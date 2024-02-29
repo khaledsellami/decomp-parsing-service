@@ -1,7 +1,7 @@
 from typing import List
 import logging
 
-from models.analyze_pb2 import Class_, Method_, Invocation_
+from models import analyze_pb2 as apb
 
 
 class DataClient:
@@ -10,11 +10,11 @@ class DataClient:
         self.app_name = app_name
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def get_classes(self) -> List[Class_]:
+    def get_classes(self) -> List[apb.Class_]:
         raise NotImplementedError()
 
-    def get_methods(self) -> List[Method_]:
+    def get_methods(self) -> List[apb.Method_]:
         raise NotImplementedError()
 
-    def get_invocations(self) -> List[Invocation_]:
+    def get_invocations(self) -> List[apb.Invocation_]:
         raise NotImplementedError()

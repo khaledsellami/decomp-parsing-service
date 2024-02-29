@@ -4,11 +4,11 @@ from typing import List, Tuple
 import numpy as np
 import pandas as pd
 
-from models import Class_, Method_
+from models import analyze_pb2 as apb
 
 
 class StructParser:
-    def __init__(self, classes: List[Class_] = None, methods: List[Method_] = None, is_distributed=False):
+    def __init__(self, classes: List[apb.Class_] = None, methods: List[apb.Method_] = None, is_distributed=False):
         self.classes = classes
         self.methods = methods
         self.is_distributed = is_distributed
@@ -30,7 +30,7 @@ class StructParser:
         else:
             return [method_.fullName for method_ in self.methods]
 
-    def find_class(self, name: str, service_name: str = None) -> Tuple[int, Class_]:
+    def find_class(self, name: str, service_name: str = None) -> Tuple[int, apb.Class_]:
         assert not (self.is_distributed and (service_name is None))
         for i, class_ in enumerate(self.classes):
             if class_.fullName == name:
