@@ -54,13 +54,10 @@ class DataHandler:
                         classes = self.client.get_classes()
                     if methods is None:
                         methods = self.client.get_methods()
-                    if file_name == "interactions":
+                    if file_name == "interactions" and level == "class":
                         parser = StructParser(classes, methods, is_distributed=self.is_distributed)
-                        if level == "class":
-                            data, calls, _, _ = parser.get_interactions()
-                            self.save(calls, f"{level}_calls")
-                        else:
-                            data = parser.get_calls(level)
+                        data, calls, _, _ = parser.get_interactions()
+                        self.save(calls, f"{level}_calls")
                     elif file_name == "calls":
                         parser = StructParser(classes, methods, is_distributed=self.is_distributed)
                         data = parser.get_calls(level)
