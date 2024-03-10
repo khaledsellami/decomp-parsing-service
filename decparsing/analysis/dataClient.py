@@ -1,7 +1,7 @@
 from typing import List
 import logging
 
-from models import analyze_pb2 as apb
+from ..models import analyze_pb2 as apb
 
 
 class DataClient:

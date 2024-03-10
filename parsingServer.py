@@ -3,11 +3,11 @@ import logging
 
 import grpc
 
-from models import parse_pb2 as ppb
-from models import parse_pb2_grpc as ppbg
-from analysis.analysisClient import AnalysisClient
-from dataHandler import DataHandler
-from config import RESTRICT_APPS
+from decparsing.models import parse_pb2 as ppb
+from decparsing.models import parse_pb2_grpc as ppbg
+from decparsing.analysis.analysisClient import AnalysisClient
+from decparsing.dataHandler import DataHandler
+from decparsing.config import RESTRICT_APPS
 
 
 ALLOWED_APPS = ["petclinic", "plants"]
