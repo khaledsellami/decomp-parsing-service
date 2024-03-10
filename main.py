@@ -3,8 +3,8 @@ import logging
 
 from cli import cli
 from parsingServer import serve
-from models import parse_pb2 as ppb
-from config import DEFAULT_JAR_PATH
+from decparsing.models import parse_pb2 as ppb
+from decparsing.config import DEFAULT_JAR_PATH
 
 
 def main():

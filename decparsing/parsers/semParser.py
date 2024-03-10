@@ -2,8 +2,8 @@ from typing import List
 
 import pandas as pd
 
-from models import analyze_pb2 as apb
-from parsers.tfidfTransformer import TFIDFTransformer
+from ..models import analyze_pb2 as apb
+from .tfidfTransformer import TFIDFTransformer
 
 
 class SemParser:

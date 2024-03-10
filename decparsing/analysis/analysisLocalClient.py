@@ -2,8 +2,8 @@ import os
 import json
 from typing import List
 
-from analysis.dataClient import DataClient
-from models import analyze_pb2 as apb
+from . import DataClient
+from ..models import analyze_pb2 as apb
 
 
 class AnalysisLocalClient(DataClient):
@@ -31,7 +31,7 @@ class AnalysisLocalClient(DataClient):
             for k in ["localInvocations", "invocations"]:
                 if k in method_:
                     method_[k] = [apb.Invocation_(**i) for i in method_[k]]
-            methods.append(Method_(**method_))
+            methods.append(apb.Method_(**method_))
         return methods
 
     def get_invocations(self) -> List[apb.Invocation_]:

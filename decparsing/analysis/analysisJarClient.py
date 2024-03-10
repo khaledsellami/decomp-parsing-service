@@ -3,8 +3,8 @@ from typing import List
 import subprocess
 import tempfile
 
-from analysis.analysisLocalClient import AnalysisLocalClient
-from models import analyze_pb2 as apb
+from .analysisLocalClient import AnalysisLocalClient
+from ..models import analyze_pb2 as apb
 
 
 class AnalysisJarClient(AnalysisLocalClient):

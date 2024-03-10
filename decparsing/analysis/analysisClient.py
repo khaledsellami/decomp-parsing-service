@@ -3,9 +3,9 @@ from typing import List
 
 import grpc
 
-from analysis.dataClient import DataClient
-from models import analyze_pb2_grpc as apbg
-from models import analyze_pb2 as apb
+from . import DataClient
+from ..models import analyze_pb2_grpc as apbg
+from ..models import analyze_pb2 as apb
 
 
 DEFAULT_ANALYSIS_SERVICE_PORTS = dict(java=50100, python=50101)

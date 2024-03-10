@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from models.parse.v2 import parse_pb2 as parse_dot_v2_dot_parse__pb2
+from . import parse_pb2 as parse_dot_v2_dot_parse__pb2
 
 
 class ParserStub(object):

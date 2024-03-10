@@ -4,7 +4,7 @@ from typing import List, Tuple
 import numpy as np
 import pandas as pd
 
-from models import analyze_pb2 as apb
+from ..models import analyze_pb2 as apb
 
 
 class StructParser:

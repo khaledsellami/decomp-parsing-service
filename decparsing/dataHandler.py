@@ -6,9 +6,9 @@ import pickle
 
 import pandas as pd
 
-from analysis.dataClient import DataClient
-from parsers import StructParser, SemParser
-from models import parse_pb2 as ppb
+from .analysis import DataClient
+from .parsers import StructParser, SemParser
+from .models import parse_pb2 as ppb
 
 
 Format = ppb.Format

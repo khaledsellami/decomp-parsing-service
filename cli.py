@@ -1,13 +1,12 @@
 import argparse
 import logging
 
-from analysis.analysisClient import AnalysisClient
-from analysis.analysisLocalClient import AnalysisLocalClient
-from analysis.analysisJarClient import AnalysisJarClient
-from dataHandler import DataHandler
-
-from models import parse_pb2 as ppb
-from config import RESTRICT_APPS, DEFAULT_JAR_PATH
+from decparsing.analysis.analysisClient import AnalysisClient
+from decparsing.analysis.analysisLocalClient import AnalysisLocalClient
+from decparsing.analysis.analysisJarClient import AnalysisJarClient
+from decparsing.dataHandler import DataHandler
+from decparsing.models import parse_pb2 as ppb
+from decparsing.config import RESTRICT_APPS, DEFAULT_JAR_PATH
 
 
 ALLOWED_APPS = ["petclinic", "plants"]
