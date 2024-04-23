@@ -1,7 +1,7 @@
+import os.path
 import re
 
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
 
@@ -21,6 +21,8 @@ class TFIDFTransformer:
         self.debugging = debugging
         self.tfidf_vectorizer = TfidfVectorizer(preprocessor=' '.join, stop_words=None)
         self.count_vectorizer = CountVectorizer(preprocessor=' '.join, stop_words=None)
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir, "stopwords.txt"), "r") as f:
+            self.stopwords = f.read().splitlines()
 
     def reset(self):
         self.class_words = dict()
@@ -62,7 +64,7 @@ class TFIDFTransformer:
         words = self.split_words(text)
         for word in words:
             word = word.lower()
-            if remove_stopwords and (word in stopwords.words("english") or len(word) < 2):
+            if remove_stopwords and (word in self.stopwords or len(word) < 2):
                 continue
             word = self.stemmer.stem(word)
             preprocessed.append(word)

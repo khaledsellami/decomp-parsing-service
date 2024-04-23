@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 from ..models import analyze_pb2 as apb
+from ..utils import handle_duplicates
 
 
 class StructParser:
@@ -18,17 +19,19 @@ class StructParser:
         if self.classes is None:
             return []
         elif self.is_distributed:
-            return [class_.serviceName.replace(" ", "") + "." + class_.fullName for class_ in self.classes]
+            names = [class_.serviceName.replace(" ", "") + "." + class_.fullName for class_ in self.classes]
         else:
-            return [class_.fullName for class_ in self.classes]
+            names = [class_.fullName for class_ in self.classes]
+        return handle_duplicates(names)
 
     def get_method_names(self) -> List[str]:
         if self.methods is None:
             return []
         elif self.is_distributed:
-            return [method_.serviceName.replace(" ","") + "." + method_.fullName for method_ in self.methods]
+            names = [method_.serviceName.replace(" ","") + "." + method_.fullName for method_ in self.methods]
         else:
-            return [method_.fullName for method_ in self.methods]
+            names = [method_.fullName for method_ in self.methods]
+        return handle_duplicates(names)
 
     def find_class(self, name: str, service_name: str = None) -> Tuple[int, apb.Class_]:
         assert not (self.is_distributed and (service_name is None))

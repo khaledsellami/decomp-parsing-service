@@ -32,13 +32,14 @@ class DataHandler:
         if level == "class":
             classes = self.client.get_classes()
             parser = StructParser(classes, is_distributed=self.is_distributed)
-            return parser.get_class_names()
+            names = parser.get_class_names()
         elif level == "method":
             methods = self.client.get_methods()
             parser = StructParser(methods=methods, is_distributed=self.is_distributed)
-            return parser.get_method_names()
+            names = parser.get_method_names()
         else:
             raise NotImplementedError()
+        return names
 
     def load_all(self, level="class") -> int:
         if level not in ["class", "method"]:
@@ -106,7 +107,7 @@ class DataHandler:
 
     def get_data(self, data_type: str, level="class") -> Tuple[str, Union[pd.DataFrame, None]]:
         assert data_type in ["interactions", "calls", "tfidf", "word_count"]
-        data_path = os.path.join(self.LOCAL_PATH, self.app_name, "{}_{}.{}".format(level, data_type,
+        data_path = os.path.join(self.output_path, self.app_name, "{}_{}.{}".format(level, data_type,
                                                                                    Format.Name(self.format).lower()))
         if not os.path.exists(data_path):
             classes = self.client.get_classes()

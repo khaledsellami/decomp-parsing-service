@@ -22,7 +22,7 @@ class AnalysisClient(DataClient):
             raise ValueError(
                 "Unrecognized language {}. Supported languages are {}".format(
                     language, list(self.ANALYSIS_SERVICE_PORTS.keys())))
-        self.app_repo = app_repo
+        self.app_repo = app_repo if app_repo else ""
         self.language = language
 
     def get_classes(self) -> List[apb.Class_]:
