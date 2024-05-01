@@ -6,8 +6,10 @@ COPY protos/ /protos/
 WORKDIR /service
 COPY . .
 RUN python -m pip install --upgrade pip
-RUN python -m pip install -r requirements.txt
-RUN python -m nltk.downloader stopwords
+RUN python -m pip install .
+RUN rm -rf decparsing
+#RUN python -m pip install -r requirements.txt
+#RUN python -m nltk.downloader stopwords
 
 EXPOSE 50500
 ENTRYPOINT [ "python", "main.py" ]
