@@ -16,7 +16,8 @@ class AnalysisClient(DataClient):
     ANALYSIS_SERVICE_PORTS = {lang: os.getenv(f'SERVICE_{lang.upper()}_ANALYSIS_PORT',
                                     DEFAULT_ANALYSIS_SERVICE_PORTS[lang]) for lang in ["java", "python"]}
 
-    def __init__(self, app_name: str, app_repo: str, language: str = "java", is_distributed: bool = False):
+    def __init__(self, app_name: str, app_repo: str, language: str = "java", is_distributed: bool = False,
+                 include_tests: bool = False):
         super().__init__(app_name, is_distributed)
         if language not in self.ANALYSIS_SERVICE_PORTS:
             raise ValueError(
@@ -24,6 +25,7 @@ class AnalysisClient(DataClient):
                     language, list(self.ANALYSIS_SERVICE_PORTS.keys())))
         self.app_repo = app_repo if app_repo else ""
         self.language = language
+        self.include_tests = include_tests
 
     def get_classes(self) -> List[apb.Class_]:
         self.logger.debug(
@@ -31,7 +33,8 @@ class AnalysisClient(DataClient):
         with grpc.insecure_channel(f'{self.SERVICE_NAME[self.language]}:{self.ANALYSIS_SERVICE_PORTS[self.language]}') \
                 as channel:
             stub = apbg.AnalyzerStub(channel)
-            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed)
+            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed,
+                                     includeTest=self.include_tests)
             return [c for c in stub.getClasses(request)]
 
     def get_methods(self) -> List[apb.Method_]:
@@ -40,7 +43,8 @@ class AnalysisClient(DataClient):
         with grpc.insecure_channel(f'{self.SERVICE_NAME[self.language]}:{self.ANALYSIS_SERVICE_PORTS[self.language]}') \
                 as channel:
             stub = apbg.AnalyzerStub(channel)
-            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed)
+            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed,
+                                     includeTest=self.include_tests)
             return [m for m in stub.getMethods(request)]
 
     def get_invocations(self) -> List[apb.Invocation_]:
@@ -49,5 +53,6 @@ class AnalysisClient(DataClient):
         with grpc.insecure_channel(f'{self.SERVICE_NAME[self.language]}:{self.ANALYSIS_SERVICE_PORTS[self.language]}') \
                 as channel:
             stub = apbg.AnalyzerStub(channel)
-            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed)
+            request = apb.AstRequest(appName=self.app_name, appRepo=self.app_repo, isDistributed=self.is_distributed,
+                                     includeTest=self.include_tests)
             return [i for i in stub.getInvocations(request)]
