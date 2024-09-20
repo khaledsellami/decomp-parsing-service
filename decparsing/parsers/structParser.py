@@ -73,7 +73,7 @@ class StructParser:
                     j = method_names.index(ref_method_name)
                     method_calls[i, j] += 1
                 else:
-                    self.logger.error("failed to find local method", ref_method_name)
+                    self.logger.error("failed to find local method: " + ref_method_name)
                 invoked_class_ = invocation_.invokedObject
                 if self.is_distributed:
                     invoked_class_ = method_.serviceName.replace(" ", "") + "." + invoked_class_
