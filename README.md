@@ -1,6 +1,6 @@
-# Decomp-Paring-Service
+# Decomp-Parsing-Service
 
-Decomp-Paring-Service is a Python module that transforms abstract static analysis results into intermediate representations that can be used to suggest a decomposition of a monolithic application into microservices.
+Decomp-Parsing-Service is a Python module that transforms abstract static analysis results into intermediate representations that can be used to suggest a decomposition of a monolithic application into microservices.
 
 ## Description
 
