@@ -121,4 +121,4 @@ Khaled Sellami - [khaledsellami](https://github.com/khaledsellami) - khaled.sell
 
 ## License
 
-TODO: add the license
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
