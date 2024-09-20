@@ -78,9 +78,9 @@ analysis_client = select_client(app_name, data_path)
 parser = DataHandler(analysis_client, output_path='/path/to/output')
 
 # Get the call dependency matrix at the class level
-call_dependency_matrix = parser.get_data("calls", level="class")
+call_dependency_matrix = parser.get_data("calls", level="class")[1]
 # Get the TFIDF matrix at the method level
-tfidf_matrix = parser.get_data("tfidf", level="method")
+tfidf_matrix = parser.get_data("tfidf", level="method")[1]
 # Generate and save all of the intermediate representations at the class level
 parser.load_all("class")
 ```
