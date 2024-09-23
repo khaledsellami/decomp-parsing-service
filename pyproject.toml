@@ -33,7 +33,7 @@ requires-python = ">=3.9"
 version = {attr = "decparsing._version.__version__"}
 
 [tool.setuptools.package-data]
-mypkg = ["stopwords.txt"]
+decparsing = ["stopwords.txt"]
 
 [tool.setuptools.packages.find]
 include = ["decparsing*"]
