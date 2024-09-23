@@ -1,0 +1,44 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "decparsing"
+dynamic = ["version"]
+description = "Transforms abstract static analysis results into intermediate representations that are often used to suggest a decomposition of a monolithic application into microservices."
+readme = "README.md"
+authors = [{ name = "Khaled Sellami" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+]
+keywords = ["decomposition", "monolith", "microservices", "static analysis", "refactoring"]
+dependencies = [
+    "numpy>=1.23.3",
+    "pandas>=1.4.4",
+    "scikit-learn>=1.1.3,<1.4.0",
+    "pyarrow>=8.0.0",
+    "nltk>=3.6.7",
+    "grpcio>=1.42.0",
+    "protobuf>=3.20.3,<4.0.0rc1"
+]
+requires-python = ">=3.9"
+
+[tool.setuptools.dynamic]
+version = {attr = "decparsing._version.__version__"}
+
+[tool.setuptools.package-data]
+mypkg = ["stopwords.txt"]
+
+[tool.setuptools.packages.find]
+include = ["decparsing*"]
+exclude = ["docs*", "test*"]
+
+[project.urls]
+Repository = "https://github.com/khaledsellami/decomp-parsing-service"
+Issues = "https://github.com/khaledsellami/decomp-parsing-service/issues"
