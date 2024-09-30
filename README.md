@@ -6,7 +6,7 @@ Decomp-Parsing-Service is a Python module that transforms abstract static analys
 
 The Parsing Service interacts with the static analysis tools that generate abstract representations in the form of TypeData, methodData and invocationData. This service transforms these results into more detailed representations that can be used by monolith to microservices decomposition approaches. 
 
-This service is a part of a research project that aims to provide a standarized framework for analyzing monolithic applications, decomposing them into microservices, visualizing the decompositions, evaluating the decompositions and refactoring the monolith.
+[//]: # (This service is a part of a research project that aims to provide a standarized framework for analyzing monolithic applications, decomposing them into microservices, visualizing the decompositions, evaluating the decompositions and refactoring the monolith.)
 
 Currently, the following representations are implemented:
 - Call Dependency Matrix: a matrix that represents the call dependencies between the methods or classes of the application.
