@@ -1,5 +1,6 @@
 from concurrent import futures
 import logging
+import os
 
 import grpc
 
@@ -15,6 +16,7 @@ ALLOWED_APPS = ["petclinic", "plants"]
 
 SUPPORTED_LANGUAGES = ["java", "python"]
 CHUNK_SIZE = 1024
+DEFAULT_PORT = 50500
 
 
 class ParsingServer(ppbg.ParserServicer):
@@ -105,7 +107,7 @@ class ParsingServer(ppbg.ParserServicer):
 
 
 def serve():
-    port = '50500'
+    port = str(os.getenv('SERVICE_PARSING_PORT', DEFAULT_PORT))
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     ppbg.add_ParserServicer_to_server(ParsingServer(), server)
     server.add_insecure_port('[::]:' + port)
