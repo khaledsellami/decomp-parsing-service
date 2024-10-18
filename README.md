@@ -118,6 +118,8 @@ Khaled Sellami - [khaledsellami](https://github.com/khaledsellami) - khaled.sell
 
 * 1.5.3
     * Initial Documented Release
+* 1.5.4
+    * Updated Analysis API to v3
 
 ## License
 
