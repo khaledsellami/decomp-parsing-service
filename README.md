@@ -120,6 +120,8 @@ Khaled Sellami - [khaledsellami](https://github.com/khaledsellami) - khaled.sell
     * Initial Documented Release
 * 1.5.4
     * Updated Analysis API to v3
+* 1.5.5
+    * Added analysisRuntimeClient to load the data from the runtime directly.
 
 ## License
 
