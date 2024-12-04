@@ -18,6 +18,7 @@ class AnalysisLocalClient(DataClient):
         classes = []
         for class_ in class_data:
             if "fieldCalls" in class_:
+                class_ = class_.copy()
                 class_["fieldCalls"] = [apb.Invocation_(**fc) for fc in class_["fieldCalls"]]
             classes.append(apb.Class_(**class_))
         return classes
@@ -29,6 +30,7 @@ class AnalysisLocalClient(DataClient):
         methods = []
         for method_ in method_data:
             for k in ["localInvocations", "invocations"]:
+                method_ = method_.copy()
                 if k in method_:
                     method_[k] = [apb.Invocation_(**i) for i in method_[k]]
             methods.append(apb.Method_(**method_))

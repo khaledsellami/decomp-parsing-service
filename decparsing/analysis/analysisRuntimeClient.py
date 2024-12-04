@@ -17,6 +17,7 @@ class AnalysisRuntimeClient(DataClient):
     def convert_classes(class_data: List[Dict]) -> List[apb.Class_]:
         classes = []
         for class_ in class_data:
+            class_ = class_.copy()
             if "fieldCalls" in class_:
                 class_["fieldCalls"] = [apb.Invocation_(**fc) for fc in class_["fieldCalls"]]
             classes.append(apb.Class_(**class_))
@@ -27,6 +28,7 @@ class AnalysisRuntimeClient(DataClient):
         methods = []
         for method_ in method_data:
             for k in ["localInvocations", "invocations"]:
+                method_ = method_.copy()
                 if k in method_:
                     method_[k] = [apb.Invocation_(**i) for i in method_[k]]
             methods.append(apb.Method_(**method_))
