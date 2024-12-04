@@ -20,12 +20,12 @@ class DataHandler:
     LOCAL_PATH = "./data/"
     DATA_FORMAT = Format.PARQUET
 
-    def __init__(self, client: DataClient, format: Format = Format.PARQUET, output_path: Optional[str] = None):
+    def __init__(self, client: DataClient, format: Format = Format.PARQUET, output_path: Optional[str] = "KW_DEFAULT"):
         self.app_name = client.app_name
         self.is_distributed = client.is_distributed
         self.client = client
         self.format = format
-        self.output_path = self.LOCAL_PATH if output_path is None else output_path
+        self.output_path = self.LOCAL_PATH if output_path == "KW_DEFAULT" else output_path
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def get_names(self, level="class") -> List[str]:
@@ -46,7 +46,7 @@ class DataHandler:
             raise ValueError(f"level {level} is not in ['class', 'method']")
         classes = methods = None
         for file_name in ["interactions", "calls", "tfidf", "word_count"]:
-            if not os.path.exists(
+            if not self.output_path and not os.path.exists(
                     os.path.join(self.output_path, self.app_name, "{}_{}.{}".format(level, file_name,
                                                                                     Format.Name(self.format).lower()))
             ):
@@ -78,6 +78,9 @@ class DataHandler:
         return 0
 
     def save(self, data: pd.DataFrame, name: str):
+        if not self.output_path:
+            self.logger.warning("No output path specified. Data will not be saved!")
+            return
         path = os.path.join(self.output_path, self.app_name, "{}.{}".format(name, Format.Name(self.format).lower()))
         self.logger.debug(f"Saving data in {path}")
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -107,9 +110,12 @@ class DataHandler:
 
     def get_data(self, data_type: str, level="class") -> Tuple[str, Union[pd.DataFrame, None]]:
         assert data_type in ["interactions", "calls", "tfidf", "word_count"]
-        data_path = os.path.join(self.output_path, self.app_name, "{}_{}.{}".format(level, data_type,
+        if self.output_path:
+            data_path = os.path.join(self.output_path, self.app_name, "{}_{}.{}".format(level, data_type,
                                                                                    Format.Name(self.format).lower()))
-        if not os.path.exists(data_path):
+        else:
+            data_path = None
+        if not data_path or not os.path.exists(data_path):
             classes = self.client.get_classes()
             methods = self.client.get_methods()
             if data_type == "interactions":
@@ -135,7 +141,7 @@ class DataHandler:
             data = self.load(data_path)
         return data_path, data
 
-    def convert(self, path: str = None, data: pd.DataFrame = None, format: Format = Format.PARQUET):
+    def convert(self, path: Optional[str] = None, data: Optional[pd.DataFrame] = None, format: Format = Format.PARQUET):
         assert not (path is None and data is None)
         if path is not None:
             data = self.load(path)
